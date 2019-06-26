@@ -7,7 +7,6 @@ int linhaC = 0, colunaC = 0; //para receber os parâmetros da matriz C
 int matrizA[50][50]; //50 foi definido como o limite de todas as matrizes
 int matrizB[50][50];
 int matrizC[50][50]; //matriz resultante 
-int matrizC_Arquivo[50][50];
 char arquivoA[20];
 char arquivoB[20];
 //ponteiros para os arquivos
@@ -144,7 +143,7 @@ int escolha(int numero)
 			}
 			else
 			{
-				printf("Não é possivel somar as matrizes inseridas\n");
+				printf("Não é possivel subtrair as matrizes inseridas\n");
 			}
 			break;
 
@@ -216,7 +215,7 @@ int escolha(int numero)
 
 		case 12:
     //imprime a matriz C
-    
+      printf ("\nA matriz resultante C é:\n");
 			for (int i = 0; i < linhaC; i++)
 			{ //percorre as linhas de B
 				for (int j = 0; j < colunaC; j++)
@@ -299,7 +298,7 @@ int escolha(int numero)
 					      elemento ij e transcreve em B*/
 				}
 			}
-			printf("\nA matriz escolhida foi: \n");
+			printf("\nA matriz escolhida foi: \n"); //imprime a matriz
 			for (int i = 0; i < linhaB; i++)
 			{
 				for (int j = 0; j < colunaB; j++)
@@ -314,19 +313,19 @@ int escolha(int numero)
 		case 15:
     //escrever matriz C em um arquivo
     
-			fileout = fopen("Arquivo_C/matrizC.txt", "w");
+			fileout = fopen("Arquivo_C/matrizC.txt", "w");//abre o arquivo
 
-			fprintf(fileout, "%d %d\n", colunaC, linhaC);
+			fprintf(fileout, "%d %d\n", colunaC, linhaC);/*escreve no arquivo numero de linhas e colunas*/
 
 			for (int i = 0; i < linhaC; i++)
 			{
 				for (int j = 0; j < colunaC; j++)
 				{
 					{
-						fprintf(fileout, "%4.1d", matrizC_Arquivo[i][j] = matrizC[i][j]);
+						fprintf(fileout, "%4.1d", matrizC[i][j]);//imprime no arquivo a matriz C
 					}
 				}
-				fprintf(fileout, "\n");
+				fprintf(fileout, "\n");//espaçamento entre coluna
 			}
 			printf("Matriz C salva em um arquivo com sucesso!");
 			break;
