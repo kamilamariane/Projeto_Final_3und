@@ -225,6 +225,7 @@ int escolha(int numero)
 				printf("\n");
 				/*separa os elementos em cada passagem por
 				     fins estéticos*/
+				printf ("\t");
 			}
 			break;
 
