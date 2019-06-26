@@ -1,0 +1,1 @@
+int escolha(int numero);
