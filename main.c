@@ -20,7 +20,5 @@ int main(){
     escolha(operacao);
   }while(operacao != 16);
   
-
   return 0;
-
 }
