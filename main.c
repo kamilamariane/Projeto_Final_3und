@@ -6,7 +6,6 @@
 #include "Headers/menu.h"
 #include "Headers/escolha.h"
 
-
 int main(){
     
   srand(time(NULL));
