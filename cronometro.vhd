@@ -4,7 +4,7 @@ use work.pacote.all;
 use ieee.numeric_std.all;
 
 entity cronometro is
-generic (SEGUNDOS:  integer := 49999999); 	-- numero de clocks para um segundo (50 MHz)
+generic (ClockFrequency :  integer:=10); 	-- numero de clocks para um segundo
 port(
 	CLOCK_50 :  in std_logic;
 	START_PAUSE : in std_logic;
@@ -20,10 +20,10 @@ port(
 );
 end cronometro;
 
-architecture behaviour of cronometro is
+architecture behavioural of cronometro is
 	signal S_P : boolean;							-- sinal para o botão START_PAUSE
 	signal R_T : boolean;							-- sinal para o botão RESTART
-	signal TEMP: integer range 0 to SEGUNDOS; -- contagem
+	signal TEMP: integer range 0 to ClockFrequency ; -- contagem
 	signal SS0 : integer range 0 to 59 := 0; 	-- contagem geral de segundos
 	signal SS1 : integer range 0 to 9 := 0;  	-- primeiro segmento de segundos
 	signal SS2 : integer range 0 to 5 := 0;   -- segundo segmento de segundos
@@ -47,7 +47,7 @@ architecture behaviour of cronometro is
 		process(CLOCK_50)
 		begin
 		 if rising_edge(CLOCK_50) then
-			if(TEMP /= SEGUNDOS) then  			-- borda ascendente do clock para contar os segundos quando necessario
+			if(TEMP = ClockFrequency  - 1) then  			-- borda ascendente do clock para contar os segundos quando necessario
 				TEMP <= TEMP + 1;
 			else
 				if(R_T) then
@@ -95,4 +95,6 @@ architecture behaviour of cronometro is
 		end if;
 	end if;
 end process;
-end behaviour;
+end behavioural;
+				
+		
