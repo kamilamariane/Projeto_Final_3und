@@ -50,9 +50,21 @@ architecture behavioural of cronometro is
 		
 		begin
 			if rising_edge(CLOCK_50) then
-			
-				if R_T = '0' then
 				
+	
+				if (not R_T) then
+				
+					TEMP <= 0;
+					SS0 <=0;
+					SS1 <=0;
+					SS2 <=0;
+					MM0 <=0;
+					MM1 <=0;
+					MM2 <=0;
+					HH0 <=0;
+					HH1 <=0;
+					HH2 <=0;
+					
 				else
 					--verdade a cada um segundo
 				
@@ -60,63 +72,73 @@ architecture behavioural of cronometro is
 						TEMP <= 0;
 						
 						--verdade a cada um minuto
-							if SS0 = 59 then
+							if (SS0 = 59) then
 								SS0 <=0;
 								SS1 <=0;
 								SS2 <=0;
 									
 									--verdade a cada uma hora
-									if MM0 = 59 then
+									if (MM0 = 59) then
 										MM0 <=0;
 										MM1 <=0;
 										MM2 <=0;		
 											
 											--verdade a cada 1 dia (fim da contagem)
-											if HH0 = 23 then
+											if (HH0 = 23) then
 												HH0 <=0;
 												HH1 <=0;
 												HH2 <=0;
 											else
-												(HH0 = HH0 + 1);
-													if HH1 = 9 then 
+												HH0 <= HH0 + 1;
+													if (HH1 = 9) then 
 														HH1 <= 0;
-															if HH2 = 2 then
+														
+															if (HH2 = 2) then
 																HH2 <= 0;
 															else
-																HH2 = HH2 + 1;
-													else (HH1 = HH1 + 1;
+																HH2 <= HH2 + 1;
+															end if;
+															
+													else 
+														HH1 <= HH1 + 1;
+													end if;
+														
 												
 											end if;
 											
 									else
-										MM0 = MM0 + 1;
-											if MM1 = 9 then
+										MM0 <= MM0 + 1;
+											if (MM1 = 9) then
 												MM1 <= 0;
-													if MM2 = 5 then
+												
+													if (MM2 = 5) then
 														MM2 <= 0;
 													else
-														MM2 = MM2 + 1;
+														MM2 <= MM2 + 1;
+													end if;
+													
 											else
-												MM1 = MM1 + 1;
+												MM1 <= MM1 + 1;
+											end if;
 												
 									end if;
 									
 							else
-								SS0 = SS0 + 1;
-									if SS1 = 9 then
+								SS0 <= SS0 + 1;
+									if (SS1 = 9) then
 									SS1 <= 0;
-										if SS2 = 5 then
+									
+										if (SS2 = 5) then
 											SS2 <= 0;
 										else
-											SS2 = SS2 + 1;
+											SS2 <= SS2 + 1;
+										end if;
+										
 									else
-										SS1 = SS1 + 1;
+										SS1 <= SS1 + 1;
+									end if;
 										
 							end if;
-						
-							
-								
-									
 						
 					else
 						TEMP <= TEMP + 1;
@@ -126,9 +148,9 @@ architecture behavioural of cronometro is
 				end if;
 
 			end if;
-
+			
 		end process;
 		
-end behavioural;
+	end behavioural;
 				
 		
