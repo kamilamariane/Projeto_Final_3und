@@ -66,8 +66,8 @@ architecture behavioural of cronometro is
 					HH2 <=0;
 					
 				else
-					--verdade a cada um segundo
-				
+					
+				        --verdade a cada um segundo
 					if(TEMP = ClockFrequency  - 1) then  			 
 						TEMP <= 0;
 						
