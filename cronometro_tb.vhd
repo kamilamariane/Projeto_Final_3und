@@ -7,7 +7,11 @@ ENTITY TB_cronometro IS
 END TB_cronometro;
 
 
-ARCHITECTURE rtl OF TB_cronometro IS
+ARCHITECTURE sim OF TB_cronometro IS
+	 
+	 constant 	ClockFrequency : integer := 10; --10MHz
+	 constant 	ClockPeriod : time := 1000 ms / ClockFrequency;
+	 
     COMPONENT cronometro
         PORT(
                 CLOCK_50 : IN STD_LOGIC;
@@ -26,9 +30,9 @@ ARCHITECTURE rtl OF TB_cronometro IS
        );
     END COMPONENT;
     
-    SIGNAL CLOCK_50 : STD_LOGIC;
-    SIGNAL START_PAUSE : STD_LOGIC;
-    SIGNAL RESTART : STD_LOGIC;
+    SIGNAL CLOCK_50 : STD_LOGIC := '1';
+    SIGNAL START_PAUSE : STD_LOGIC := '1';
+    SIGNAL RESTART : STD_LOGIC := '0';
     
     SIGNAL HEX0_D :  std_logic_vector (6 downto 0);
     SIGNAL HEX1_D :  std_logic_vector (6 downto 0);
@@ -41,35 +45,38 @@ ARCHITECTURE rtl OF TB_cronometro IS
    
     
     BEGIN
-    dut: cronometro PORT MAP
-    (
-        CLOCK_50 => CLOCK_50,
-        START_PAUSE => START_PAUSE,
-        RESTART => RESTART,
-        HEX0_D => HEX0_D,
-        HEX1_D => HEX1_D,
-        HEX2_D => HEX2_D,
-        HEX3_D => HEX3_D,
-        HEX4_D => HEX4_D,
-        HEX5_D => HEX5_D,
-        HEX6_D => HEX6_D,
-        HEX7_D => HEX7_D
-    );
+	 
+		 dut: entity work.cronometro
+		 generic map (ClockFrequency => ClockFrequency)
+		 PORT MAP
+		 (
+			  CLOCK_50 => CLOCK_50,
+			  START_PAUSE => START_PAUSE,
+			  RESTART => RESTART,
+			  HEX0_D => HEX0_D,
+			  HEX1_D => HEX1_D,
+			  HEX2_D => HEX2_D,
+			  HEX3_D => HEX3_D,
+			  HEX4_D => HEX4_D,
+			  HEX5_D => HEX5_D,
+			  HEX6_D => HEX6_D,
+			  HEX7_D => HEX7_D
+		 );
+		 
+		 CLOCK_50 <= not CLOCK_50 after ClockPeriod / 2;
+		 
+		 --testbench
+		 process is
+		 begin
+				wait until rising_edge (CLOCK_50);
+				wait until rising_edge (CLOCK_50);
+				
+				RESTART <= '1';
+				wait;
+		 end process;
+	 
+	 
 
     
-    stim_process: PROCESS
-    BEGIN
-              WAIT FOR 50 ns;
-              RESTART <= '1';
-             
-              WAIT FOR 5 ns;
-              START_PAUSE <= '1';
-           
-              WAIT FOR 5 ns;
-              START_PAUSE <= '1';
-             
-              WAIT FOR 1500 ns;
-              RESTART <= '1';
-              
-    END PROCESS;
-END rtl;
+    
+END sim;
