@@ -1,0 +1,134 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use work.pacote.all;
+use ieee.numeric_std.all;
+
+entity cronometro is
+generic (ClockFrequency :  integer:=10); 	-- numero de clocks para um segundo
+port(
+	CLOCK_50 :  in std_logic;
+	START_PAUSE : in std_logic;
+	RESTART	: in std_logic;
+	HEX0_D :  out std_logic_vector (6 downto 0);
+	HEX1_D :  out std_logic_vector (6 downto 0);
+	HEX2_D :  out std_logic_vector (6 downto 0);
+	HEX3_D :  out std_logic_vector (6 downto 0);
+	HEX4_D :  out std_logic_vector (6 downto 0);
+	HEX5_D :  out std_logic_vector (6 downto 0);
+	HEX6_D :  out std_logic_vector (6 downto 0);
+	HEX7_D :  out std_logic_vector (6 downto 0)
+);
+end cronometro;
+
+architecture behavioural of cronometro is
+	signal S_P : boolean;							-- sinal para o botão START_PAUSE
+	signal R_T : boolean;							-- sinal para o botão RESTART
+	signal TEMP: integer range 0 to ClockFrequency ; -- contagem
+	signal SS0 : integer range 0 to 59 := 0; 	-- contagem geral de segundos
+	signal SS1 : integer range 0 to 9 := 0;  	-- primeiro segmento de segundos
+	signal SS2 : integer range 0 to 5 := 0;   -- segundo segmento de segundos
+	signal MM0 : integer range 0 to 59 := 0; 	-- contagem geral de minutos
+	signal MM1 : integer range 0 to 9 := 0; 	-- segundo segmento de minutos
+	signal MM2 : integer range 0 to 5 := 0; 	-- segundo segmento de minutos
+	signal HH0 : integer range 0 to 23 := 0; 	-- ontagem geral de horas
+	signal HH1 : integer range 0 to 9 := 0; 	-- segundo segmento de horas
+	signal HH2 : integer range 0 to 2 := 0; 	-- segundo segmento de horas
+	
+	begin 												-- atribuição de valores para os segmentos
+		HEX0_D <= integertoseg(10);
+		HEX1_D <= integertoseg(10);
+		HEX2_D <= integertoseg(SS1);
+		HEX3_D <= integertoseg(SS2);
+		HEX4_D <= integertoseg(MM1);
+		HEX5_D <= integertoseg(MM2);
+		HEX6_D <= integertoseg(HH1);
+		HEX7_D <= integertoseg(HH2);
+		S_P <= toboolean(START_PAUSE);
+		R_T <= not toboolean(RESTART);
+		
+		process(CLOCK_50) is
+		
+		begin
+			if rising_edge(CLOCK_50) then
+			
+				if R_T = '0' then
+				
+				else
+					--verdade a cada um segundo
+				
+					if(TEMP = ClockFrequency  - 1) then  			 
+						TEMP <= 0;
+						
+						--verdade a cada um minuto
+							if SS0 = 59 then
+								SS0 <=0;
+								SS1 <=0;
+								SS2 <=0;
+									
+									--verdade a cada uma hora
+									if MM0 = 59 then
+										MM0 <=0;
+										MM1 <=0;
+										MM2 <=0;		
+											
+											--verdade a cada 1 dia (fim da contagem)
+											if HH0 = 23 then
+												HH0 <=0;
+												HH1 <=0;
+												HH2 <=0;
+											else
+												(HH0 = HH0 + 1);
+													if HH1 = 9 then 
+														HH1 <= 0;
+															if HH2 = 2 then
+																HH2 <= 0;
+															else
+																HH2 = HH2 + 1;
+													else (HH1 = HH1 + 1;
+												
+											end if;
+											
+									else
+										MM0 = MM0 + 1;
+											if MM1 = 9 then
+												MM1 <= 0;
+													if MM2 = 5 then
+														MM2 <= 0;
+													else
+														MM2 = MM2 + 1;
+											else
+												MM1 = MM1 + 1;
+												
+									end if;
+									
+							else
+								SS0 = SS0 + 1;
+									if SS1 = 9 then
+									SS1 <= 0;
+										if SS2 = 5 then
+											SS2 <= 0;
+										else
+											SS2 = SS2 + 1;
+									else
+										SS1 = SS1 + 1;
+										
+							end if;
+						
+							
+								
+									
+						
+					else
+						TEMP <= TEMP + 1;
+					
+					end if;
+				
+				end if;
+
+			end if;
+
+		end process;
+		
+end behavioural;
+				
+		
