@@ -52,7 +52,7 @@ architecture behavioural of cronometro is
 			if rising_edge(CLOCK_50) then
 				
 	
-				if (R_T) then
+				if RESTART = '0' then
 				
 					TEMP <= 0;
 					SS0 <=0;
