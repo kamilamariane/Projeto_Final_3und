@@ -4,7 +4,7 @@ use work.pacote.all;
 use ieee.numeric_std.all;
 
 entity cronometro is
-generic (SEGUNDOS:  integer := 49999999); 	-- numero de clocks para um segundo
+generic (SEGUNDOS:  integer := 49999999); 	-- numero de clocks para um segundo (50 MHz)
 port(
 	CLOCK_50 :  in std_logic;
 	START_PAUSE : in std_logic;
